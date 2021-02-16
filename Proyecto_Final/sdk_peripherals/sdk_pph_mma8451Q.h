@@ -1,7 +1,7 @@
 /*! @file : sdk_pph_mma8460.h
- * @author  Ernesto Andres Rincon Cruz
+ * @author  Mayra Torres
  * @version 1.0.0
- * @date    17/01/2021
+ * @date    28 ene. 2021
  * @brief   Driver para MMA8451Q
  * @details
  *

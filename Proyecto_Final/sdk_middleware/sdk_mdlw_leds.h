@@ -48,7 +48,7 @@ static inline void apagarLedRojo(void) {
 	gpioPutValue(LED_ROJO_PIN, 1);
 }
 
-static inline void toggleLedRojo(void){
+inline void toggleLedRojo(void){
 	gpioPutToggle(LED_ROJO_PIN);
 }
 

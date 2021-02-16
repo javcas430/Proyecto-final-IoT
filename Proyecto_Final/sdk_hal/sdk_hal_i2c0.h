@@ -1,32 +1,30 @@
-/*! @file : sdk_hal_uart0.h
- * @author  Ernesto Andres Rincon Cruz
+/*! @file : sdk_hal_i2c0.h
+ * @author  Mayra Torres
  * @version 1.0.0
- * @date    8/01/2021
- * @brief   Driver para UART0
+ * @date    28 ene. 2021
+ * @brief   Driver for I2C0
  * @details
  *
  */
-
-#ifndef SDK_HAL_UART0_H_
-#define SDK_HAL_UART0_H_
+#ifndef SDK_HAL_I2C0_H_
+#define SDK_HAL_I2C0_H_
 /*******************************************************************************
  * Includes
  ******************************************************************************/
 #include "fsl_common.h"
+
 
 /*!
  * @addtogroup HAL
  * @{
  */
 /*!
- * @addtogroup UART0
+ * @addtogroup I2C
  * @{
  */
 /*******************************************************************************
  * Public Definitions
  ******************************************************************************/
-/*! @brief Tamaño de buffer circular para recibir datos por UART (Unit: Byte). */
-#define LONGITUD_BUFFER_CIRCULAR 	100
 
 /*******************************************************************************
  * External vars
@@ -41,43 +39,48 @@
  ******************************************************************************/
 /*--------------------------------------------*/
 /*!
- * @brief Inicializa UART0 al baudrate especificado
+ * @brief Perform a I2C0 initialization
  *
- * @param baud_rate   baudrate (bps) que se quiere configurado en UART0
- * @return            estado de la ejecución
- * @code
- * 		kStatus_Success
- * 		kStatus_Fail
- * 		kStatus_ReadOnly
- * 		kStatus_OutOfRange
- * 		kStatus_InvalidArgument
- * 		kStatus_Timeout
- * 		kStatus_NoTransferInProgress
- * @endcode
- */
-status_t uart0Inicializar(uint32_t baud_rate);
-/*--------------------------------------------*/
-/*!
- * @brief Calcula el numero de datos nuevos que hay en el buffer circular
- *
- * @return	numero de bytes que estan pendientes por ser procesados
- * @endcode
- */
-uint16_t uart0CuantosDatosHayEnBuffer(void);
-/*--------------------------------------------*/
-/*!
- * @brief Obtiene 1 byte desde buffer circular
- *
- * @param nuevo_byte	apuntador de memoria donde almacenar nuevo byte
- * @return	estado de la ejecución
+ * @param baud_rate   baudrate (bps) for I2C module
+ * @return            status for process
  * @code
  * 		kStatus_Success
  * 		kStatus_Fail
  * @endcode
  */
-status_t uart0LeerByteDesdeBuffer(uint8_t *nuevo_byte);
+status_t i2c0MasterInit(uint32_t baud_rate);
+/*--------------------------------------------*/
+/*!
+ * @brief Read byte from I2C0 devide
+ *
+ * @param data				memory adderess pointer
+ * @param bytes_to_read		number of byte to read form i2c device
+ * @param device_address	I2C address
+ * @return            resultado de la ejecución
+ * @code
+ * 		kStatus_Success
+ * 		kStatus_Fail
+ * @endcode
+ */
+status_t i2c0MasterReadByte(uint8_t *data, uint8_t bytes_to_read, uint8_t device_address, int8_t memory_address);
+/*--------------------------------------------*/
+/*!
+ * @brief Write byte to I2C0 devide
+ *
+ * @param data				memory adderess pointer
+ * @param bytes_to_read		number of byte to write on i2c device
+ * @param device_address	I2C address
+ * @return            resultado de la ejecución
+ * @code
+ * 		kStatus_Success
+ * 		kStatus_Fail
+ * @endcode
+ */
+status_t i2c0MasterWriteByte(uint8_t *data, uint8_t bytes_to_write, uint8_t device_address, int8_t memory_address);
 
-/** @} */ // end of UART0 group
+
+
+/** @} */ // end of I2C0 group
 /** @} */ // end of HAL group
 
-#endif /* SDK_HAL_UART0_H_ */
+#endif /* SDK_HAL_I2C0_H_ */

@@ -1,7 +1,7 @@
 /*! @file : sdk_hal_uart0.c
- * @author  Ernesto Andres Rincon Cruz
+ * @author  Mayra Torres
  * @version 1.0.0
- * @date    8/01/2021
+ * @date    28 ene. 2021
  * @brief   Driver para UART0
  * @details
  *

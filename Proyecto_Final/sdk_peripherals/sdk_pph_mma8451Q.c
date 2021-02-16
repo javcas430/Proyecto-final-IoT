@@ -1,7 +1,7 @@
 /*! @file : sdk_pph_mma8460.c
- * @author  Ernesto Andres Rincon Cruz
+ * @author  Mayra Torres
  * @version 1.0.0
- * @date    17/01/2021
+ * @date    28 ene. 2021
  * @brief   Driver para MMA8451Q
  * @details
  *
@@ -81,9 +81,6 @@ status_t mma8451QInit(void){
 	i2c_data = 0x00;
 	status = i2c0MasterWriteByte(&i2c_data, 1, MMA8451_ADDRESS, REG_CTRL_REG1);
 
-	if(status!=kStatus_Success)
-		return(status);
-
     /*  write 0000 0001= 0x01 to XYZ_DATA_CFG register */
     /*  [7]: reserved */
     /*  [6]: reserved */
@@ -96,9 +93,6 @@ status_t mma8451QInit(void){
 	i2c_data = 0x01;
 	status = i2c0MasterWriteByte(&i2c_data, 1, MMA8451_ADDRESS, REG_XYZ_DATA_CFG);
 
-	if(status!=kStatus_Success)
-		return(status);
-
     /*  write 0000 1101 = 0x0D to accelerometer control register 1 */
     /*  [7-6]: aslp_rate=00 */
     /*  [5-3]: dr=001 for 200Hz data rate (when in hybrid mode) */
@@ -108,11 +102,6 @@ status_t mma8451QInit(void){
     /*   databyte = 0x0D; */
 	i2c_data = 0x0D;
 	status = i2c0MasterWriteByte(&i2c_data, 1, MMA8451_ADDRESS, REG_CTRL_REG1);
-
-	if(status!=kStatus_Success)
-		return(status);
-
-	return(kStatus_Success);
 }
 
 
