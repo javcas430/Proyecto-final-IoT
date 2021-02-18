@@ -27,9 +27,9 @@
 #include "sdk_hal_i2c0.h"
 
 #include <sdk_pph_bme280.h>
-//#include "sdk_mdlw_leds.h"
-//#INCLUDE "SDK_PPH_MMA8451Q.H"
-//#INCLUDE "SDK_PPH_EC25AU.H"
+#include "sdk_mdlw_leds.h"
+#include "sdk_pph_mma8451Q.h"
+#include "sdk_pph_ec25au.h"
 
 /***************************
  *
@@ -52,6 +52,12 @@
 /*******************************************************************************
  * Private Source Code
  ******************************************************************************/
+void waytTime(void) {
+	uint32_t tiempo = 0xFFFFF;
+	do {
+		tiempo--;
+	} while (tiempo != 0x0000);
+}
 
 void PrintValues(void) {
 
@@ -70,6 +76,8 @@ void PrintValues(void) {
  * @brief   Application entry point.
  */
 int main(void) {
+	uint8_t mensaje[]="prueba";
+	 uint8_t estado_actual_ec25;
 	BOARD_InitBootPins();
 	BOARD_InitBootClocks();
 	BOARD_InitBootPeripherals();
@@ -80,12 +88,18 @@ int main(void) {
 	(void) uart0Inicializar(115200);	//115200bps
 	(void) i2c0MasterInit(100000);	//100kbps
 
-	bool inicio = Bme280_Begin(0x76);
-	uint8_t letra;
-	status_t status;
-	bool leer=false;
+//	bool inicio = Bme280_Begin(0x76);
+	//uint8_t letra;
+	//status_t status;
+	//bool leer=false;
+   /*LLamado a funcion que identifica modem conectado a puerto UART0
+	if(detectarModemQuectel()==kStatus_Success){
+		encenderLedAzul();
+	}else{
+		apagarLedAzul();
+	} */
 
-	while (1) {
+/*while (1) {
 
 		if (leer) {
 			(void) readTemperature();
@@ -121,5 +135,39 @@ int main(void) {
 
 		}
 	}
+	*/
+    //inicializa todas las funciones necesarias para trabajar con el modem EC25
+    ec25Inicializacion();
+    ec25EnviarMensajeDeTexto(&mensaje[0], sizeof(mensaje));
+
+	//Ciclo infinito encendiendo y apagando led verde
+	//inicia el SUPERLOOP
+    while(1) {
+    	waytTime();
+
+    	estado_actual_ec25=ec25Polling();
+
+  	switch(estado_actual_ec25){
+    	case kFSM_RESULTADO_ERROR:
+    		toggleLedRojo();
+    		apagarLedVerde();
+    		apagarLedAzul();
+    		break;
+
+    	case kFSM_RESULTADO_EXITOSO:
+    		toggleLedVerde();
+    		apagarLedAzul();
+    		apagarLedRojo();
+    		break;
+
+    	default:
+    		toggleLedAzul();
+    		apagarLedVerde();
+    		apagarLedRojo();
+    		break;
+    	}
+    }
+
+
 	return 0;
 }
