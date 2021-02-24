@@ -102,10 +102,11 @@ int main(void) {
 /*while (1) {
 
 		if (leer) {
-			(void) readTemperature();
-			(void) readPressure();
-			(void) readAltitude(SEALEVELPRESSURE_HPA);
-			(void) readHumidity();
+			float temp =(float)readTemperature();
+			double press =readPressure();
+			double alt = readAltitude(SEALEVELPRESSURE_HPA);
+			double hum = readHumidity();
+			printf("Temperaturaaaaaaaa= %.4f  \n\r",temp);
 			waitTime(1000);
 		}
 		if (uart0CuantosDatosHayEnBuffer() > 0) {

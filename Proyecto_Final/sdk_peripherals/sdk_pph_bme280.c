@@ -76,7 +76,7 @@ bool bme280_Init(void) {
 	}
 	readCoefficients();
 	setSampling(MODE_NORMAL, SAMPLING_X16, SAMPLING_X16, SAMPLING_X16,
-			FILTER_X16, STANDBY_MS_0_5);
+			FILTER_OFF, STANDBY_MS_0_5);
 
 	waitTime(200);
 	printf("Sensor Iniciado \n\r");
@@ -214,7 +214,7 @@ int32_t readTemperature(void) {
 
 	float T = (t_fine * 5 + 128) >> 8;
 	printf(" Temperatura = %f C\n\r", T / 100);
-	return T / 100;
+	return (float)(T / 100);
 }
 
 /*!
