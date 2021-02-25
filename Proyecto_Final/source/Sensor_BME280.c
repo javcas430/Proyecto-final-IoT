@@ -88,10 +88,10 @@ int main(void) {
 	(void) uart0Inicializar(115200);	//115200bps
 	(void) i2c0MasterInit(100000);	//100kbps
 
-//	bool inicio = Bme280_Begin(0x76);
-	//uint8_t letra;
-	//status_t status;
-	//bool leer=false;
+	bool inicio = Bme280_Begin(0x76);
+	uint8_t letra;
+	status_t status;
+	bool leer=false;
    /*LLamado a funcion que identifica modem conectado a puerto UART0
 	if(detectarModemQuectel()==kStatus_Success){
 		encenderLedAzul();
@@ -99,7 +99,7 @@ int main(void) {
 		apagarLedAzul();
 	} */
 
-/*while (1) {
+while (1) {
 
 		if (leer) {
 			float temp =(float)readTemperature();
@@ -136,7 +136,7 @@ int main(void) {
 
 		}
 	}
-	*/
+
     //inicializa todas las funciones necesarias para trabajar con el modem EC25
     ec25Inicializacion();
     ec25EnviarMensajeDeTexto(&mensaje[0], sizeof(mensaje));
