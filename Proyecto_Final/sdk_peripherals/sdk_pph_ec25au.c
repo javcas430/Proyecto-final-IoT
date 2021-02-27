@@ -55,7 +55,7 @@ uint8_t ec25_comando_en_ejecucion;	//almacena ultimo comando enviado para ser ej
 
 //Listado de comando AT disponibles para ser enviados al modem Quectel
 const char *ec25_comandos_at[] = {
-	"CPIN?",								//Conexion a internet a traves del modem
+	"AT+CPIN?",								//Conexion a internet a traves del modem
 	"AT+QCFG=\"nwscanmode\",0,1",			//Activar bandas nacionales
 	"AT+QCFG=\"band\",0, 800005A,0",
 	"AT+QCSQ",								//Verificamos red conectada
