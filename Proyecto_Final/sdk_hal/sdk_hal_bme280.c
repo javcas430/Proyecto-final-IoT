@@ -48,7 +48,7 @@ void waitTime(int32_t t) {
 
 bool bme280_Init(void){
 	uint8_t id;
-	status= i2c0MasterReadByte(&id, BME280_I2C_DEVICE_ADDRESS,BME280_WHO_AM_I_MEMORY_ADDRESS);
+	status= i2c0MasterReadByte(&id, BME280_I2C_DEVICE_ADDRESS, BME280_WHO_AM_I_MEMORY_ADDRESS);
 	if (id != 0x60){
 		return(kStatus_Fail);
 	}
