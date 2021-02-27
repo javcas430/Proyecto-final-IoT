@@ -1,5 +1,5 @@
 /*! @file : sdk_pph_ec25au.h
- * @author  Ernesto Andres Rincon Cruz
+ * @author  Ezequiel De La Hoz - Mayra Torres - Javier Casallas
  * @version 1.0.0
  * @date    23/01/2021
  * @brief   Driver para modem EC25AU

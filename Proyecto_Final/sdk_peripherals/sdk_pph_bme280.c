@@ -1,5 +1,5 @@
 /*! @file : sdk_pph_bme280.c
- * @author  Mayra Torres
+ * @author  Ezequiel De La Hoz - Mayra Torres - Javier Casallas
  * @version 1.0.0
  * @date    28 ene. 2021
  * @brief   Driver para 
