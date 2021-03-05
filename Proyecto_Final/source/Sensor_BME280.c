@@ -30,6 +30,7 @@
 #include "sdk_mdlw_leds.h"
 #include "sdk_pph_mma8451Q.h"
 #include "sdk_pph_ec25au.h"
+#include "sdk_mensaje.h"
 
 /***************************
  *
@@ -48,7 +49,7 @@
 /*******************************************************************************
  * Local vars
  ******************************************************************************/
-#define SEALEVELPRESSURE_HPA 1013.25
+//#define SEALEVELPRESSURE_HPA 1013.25
 /*******************************************************************************
  * Private Source Code
  ******************************************************************************/
@@ -76,8 +77,8 @@ void PrintValues(void) {
  * @brief   Application entry point.
  */
 int main(void) {
-	uint8_t mensaje[]="Temperatura,30,Humedad,80,Presion,990";
-	 uint8_t estado_actual_ec25;
+	//uint8_t mensaje[]="Temperatura, ,Humedad, ,Presion, ";//12-22-32
+	uint8_t estado_actual_ec25;
 	BOARD_InitBootPins();
 	BOARD_InitBootClocks();
 	BOARD_InitBootPeripherals();
@@ -88,11 +89,17 @@ int main(void) {
 	(void) uart0Inicializar(115200);	//115200bps
 	(void) i2c0MasterInit(100000);	//100kbps
 
-//	bool inicio = Bme280_Begin(0x76);
+	bool inicio = Bme280_Begin(0x76);
+//	if (inicio){
+//		printf("todo bien\n\r");
+//		mensaje();
+//	}
+
 	//uint8_t letra;
 	//status_t status;
 	//bool leer=false;
    //LLamado a funcion que identifica modem conectado a puerto UART0
+
 	if(detectarModemQuectel()==kStatus_Success){
 		encenderLedAzul();
 	}else{
@@ -139,7 +146,7 @@ int main(void) {
 	*/
     //inicializa todas las funciones necesarias para trabajar con el modem EC25
     ec25Inicializacion();
-    ec25EnviarMensajeDeTexto(&mensaje[0], sizeof(mensaje));
+   // //ec25EnviarMensajeDeTexto(&mensaje[0], sizeof(mensaje));
 
 	//Ciclo infinito encendiendo y apagando led verde
 	//inicia el SUPERLOOP

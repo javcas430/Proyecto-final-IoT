@@ -52,7 +52,7 @@ void waitTime(int32_t t) {
 
 bool Bme280_Begin(uint8_t addr) {
 
-	printf("Inicializando Sensor BME280 en %x \n\r", addr);
+//	printf("Inicializando Sensor BME280 en %x \n\r", addr);
 	BME280_I2C_DEVICE_ADDRESS = addr;
 
 	return bme280_Init();
@@ -63,7 +63,7 @@ bool bme280_Init(void) {
 	status = i2c0MasterReadByte(&id, 1, BME280_I2C_DEVICE_ADDRESS,
 			BME280_WHO_AM_I_MEMORY_ADDRESS);
 	if (id != 0x60) {
-		printf("No se encontro el ID del sensor \n\r ");
+		//printf("No se encontro el ID del sensor \n\r ");
 		return (false);
 	}
 	write8(BME280_REGISTER_SOFTRESET, 0xB6);
@@ -79,7 +79,7 @@ bool bme280_Init(void) {
 			FILTER_OFF, STANDBY_MS_0_5);
 
 	waitTime(200);
-	printf("Sensor Iniciado \n\r");
+	//printf("Sensor Iniciado \n\r");
 	return (true);
 }
 
@@ -198,7 +198,7 @@ int32_t readTemperature(void) {
 
 	int32_t adc_T = read24(BME280_REGISTER_TEMPDATA);
 	if (adc_T == 0x800000) { // value in case temp measurement was disabled
-		printf("no temp\n\r");
+		//printf("no temp\n\r");
 		return 0;
 	}
 	adc_T >>= 4;
@@ -213,8 +213,9 @@ int32_t readTemperature(void) {
 	t_fine = var1 + var2 + t_fine_adjust;
 
 	float T = (t_fine * 5 + 128) >> 8;
-	printf(" Temperatura = %f C\n\r", T / 100);
-	return (float)(T / 100);
+	printf("%f", T / 100);
+	float temperatura = T / 100;
+	return temperatura;
 }
 
 /*!
@@ -230,7 +231,7 @@ uint32_t readPressure(void) {
 	int32_t adc_P = read24(BME280_REGISTER_PRESSUREDATA);
 	if (adc_P == 0x800000) { // value in case pressure measurement was disabled
 		return 0;
-		printf("no press\n\r");
+		//printf("no press\n\r");
 	}
 	adc_P >>= 4;
 
@@ -252,8 +253,11 @@ uint32_t readPressure(void) {
 	var2 = (((int64_t) _bme280_calib.dig_P8) * p) >> 19;
 
 	p = ((p + var1 + var2) >> 8) + (((int64_t) _bme280_calib.dig_P7) << 4);
-	printf(" Presion = %f hPa\n\r", ((uint32_t) p / 256) / 100.0F);
-	return (uint32_t) p / 256;
+	printf("%f", ((uint32_t) p / 256) / 100.0F);
+	//printf(" Presion = %f hPa\n\r", ((uint32_t) p / 256) / 100.0F);
+	double presion = ((uint32_t) p / 256) / 100.0F;
+	return presion;
+	//return (uint32_t) p / 256;
 }
 
 /*!
@@ -266,7 +270,7 @@ uint32_t readHumidity(void) {
 
 	int32_t adc_H = read16(BME280_REGISTER_HUMIDDATA);
 	if (adc_H == 0x8000) { // value in case humidity measurement was disabled
-		printf("no hum\n\r");
+		//printf("no hum\n\r");
 		return 0;
 	}
 
@@ -289,8 +293,10 @@ uint32_t readHumidity(void) {
 	v_x1_u32r = (v_x1_u32r < 0) ? 0 : v_x1_u32r;
 	v_x1_u32r = (v_x1_u32r > 419430400) ? 419430400 : v_x1_u32r;
 	uint32_t h = (v_x1_u32r >> 12);
-	printf(" Humedad = %f %\n\r", h / 1024.0);
-	return h / 1024.0;
+	//printf(" Humedad = %f %\n\r", h / 1024.0);
+	printf("%f", h / 1024.0);
+	double humedad = h / 1024.0;
+	return humedad;
 }
 
 /*!
@@ -309,8 +315,7 @@ float readAltitude(float seaLevel) {
 	//  http://forums.adafruit.com/viewtopic.php?f=22&t=58064
 
 	float atmospheric = readPressure() / 100.0F;
-	printf(" Altitud = %f %\n\r",
-			44330.0 * (1.0 - pow(atmospheric / seaLevel, 0.1903)));
+	//printf(" Altitud = %f %\n\r", 44330.0 * (1.0 - pow(atmospheric / seaLevel, 0.1903)));
 	return 44330.0 * (1.0 - pow(atmospheric / seaLevel, 0.1903));
 }
 

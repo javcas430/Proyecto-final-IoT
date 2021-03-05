@@ -12,6 +12,7 @@
 #include "stdio.h"
 #include "sdk_pph_ec25au.h"
 #include "sdk_mdlw_leds.h"
+#include "sdk_mensaje.h"
 
 /*******************************************************************************
  * Definitions
@@ -264,7 +265,8 @@ uint8_t ec25Polling(void){
 		break;
 
 	case kFSM_ENVIANDO_MENSAJE_TXT:
-		printf("%s\r\n%c", ec25_buffer_tx,0x1A);	//Envia mensaje de texto incluido  CTRL+Z (0x1A)
+		//printf("%s\r\n%c", ec25_buffer_tx,0x1A);	//Envia mensaje de texto incluido  CTRL+Z (0x1A)
+		mensaje();
 		ec25_fsm.anterior = ec25_fsm.actual;		//almacena el estado actual
 		ec25_fsm.actual = kFSM_ESPERANDO_RESPUESTA;	//avanza a esperar respuesta del modem
 		ec25_timeout = 0;	//reset a contador de tiempo
