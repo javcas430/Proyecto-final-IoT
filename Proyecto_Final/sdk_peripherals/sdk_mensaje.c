@@ -9,15 +9,15 @@
 #include "sdk_hal_i2c0.h"
 
 
-#include <stdio.h>
-#include "board.h"
-#include "peripherals.h"
-#include "pin_mux.h"
-#include "clock_config.h"
+//#include <stdio.h>
+//#include "board.h"
+//#include "peripherals.h"
+//#include "pin_mux.h"
+//#include "clock_config.h"
 
 
 //bool leer=false;
-void mensaje(){
+void sdk_mens(){
 	//if (leer) {
 			printf("Temperatura,");
 			float temp =(float)readTemperature();

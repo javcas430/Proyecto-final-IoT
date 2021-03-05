@@ -136,6 +136,8 @@ status_t ec25Inicializacion(void){
 
 	ec25_comando_en_ejecucion=kORDEN_NO_HAY_EN_EJECUCION;	//Borra orden en ejecucipon actual
 
+	ec25_fsm.actual=kFSM_ENVIANDO_CPIN;//NNNNNNNNNNNNNNNNNNNNn
+
 	return(kStatus_Success);
 }
 //------------------------------------
@@ -266,7 +268,7 @@ uint8_t ec25Polling(void){
 
 	case kFSM_ENVIANDO_MENSAJE_TXT:
 		//printf("%s\r\n%c", ec25_buffer_tx,0x1A);	//Envia mensaje de texto incluido  CTRL+Z (0x1A)
-		mensaje();
+		sdk_mens();
 		ec25_fsm.anterior = ec25_fsm.actual;		//almacena el estado actual
 		ec25_fsm.actual = kFSM_ESPERANDO_RESPUESTA;	//avanza a esperar respuesta del modem
 		ec25_timeout = 0;	//reset a contador de tiempo
@@ -526,7 +528,7 @@ status_t detectarModemQuectel(void){
 
 	//envia comando ATI a modem quectel
 	//printf("%s\r\n",ec25_comandos_at[kATI]);
-	printf("ATI\r\n");
+	//printf("ATI\r\n");
 
 	//Recibir la respuesta es automatica por IRq de UART0
 

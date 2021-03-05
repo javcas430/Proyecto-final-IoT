@@ -77,7 +77,7 @@ void PrintValues(void) {
  * @brief   Application entry point.
  */
 int main(void) {
-	uint8_t mensaje[]="Temperatura, ,Humedad, ,Presion, ";//12-22-32
+	//uint8_t mensaje[]="";//12-22-32
 	uint8_t estado_actual_ec25;
 	BOARD_InitBootPins();
 	BOARD_InitBootClocks();
@@ -91,8 +91,8 @@ int main(void) {
 
 	bool inicio = Bme280_Begin(0x76);
 //	if (inicio){
-//		printf("todo bien\n\r");
-//		mensaje();
+//		printf("bien\n\r");
+//		sdk_mens();
 //	}
 
 	//uint8_t letra;
@@ -100,11 +100,11 @@ int main(void) {
 	//bool leer=false;
    //LLamado a funcion que identifica modem conectado a puerto UART0
 
-	if(detectarModemQuectel()==kStatus_Success){
-		encenderLedAzul();
-	}else{
-		apagarLedAzul();
-	}
+//	if(detectarModemQuectel()==kStatus_Success){
+//		encenderLedAzul();
+//	}else{
+//		apagarLedAzul();
+//	}
 
 /*while (1) {
 
@@ -146,7 +146,7 @@ int main(void) {
 	*/
     //inicializa todas las funciones necesarias para trabajar con el modem EC25
     ec25Inicializacion();
-   ec25EnviarMensajeDeTexto(&mensaje[0], sizeof(mensaje));
+   // ec25EnviarMensajeDeTexto(&mensaje[0], sizeof(mensaje));
 
 	//Ciclo infinito encendiendo y apagando led verde
 	//inicia el SUPERLOOP

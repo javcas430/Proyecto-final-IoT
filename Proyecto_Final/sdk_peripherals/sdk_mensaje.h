@@ -11,6 +11,6 @@
 
 #define SEALEVELPRESSURE_HPA 1013.
 
-void mensaje();// funcion que envia mensaje.
+void sdk_mens();// funcion que envia mensaje.
 
 #endif /* SDK_MENSAJE_H_ */
