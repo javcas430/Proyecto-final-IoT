@@ -18,18 +18,18 @@
 
 //bool leer=false;
 void sdk_mens(){
-	//if (leer) {
-			printf("Temperatura,");
+
+//			printf("Temperatura,");
 			float temp =(float)readTemperature();
-			printf(",Humedad,");
+//			printf(",Humedad,");
 			double hum = readHumidity();
-			printf(",Presion,");
+//			printf(",Presion,");
 			double press =readPressure();
-			printf("\r\n%c",0x1A);
+//			printf("%c",0x1A);
 			//double alt = readAltitude(SEALEVELPRESSURE_HPA);
 
-			//printf("Temperatura, %f,Humedad, %d,Presion, %d \r\n%c",temp,hum,press,0x1A);
+			printf("Temperatura, %f,Humedad, %f,Presion, %f%c",temp,hum,press,0x1A);
 			//printf("Temperaturaaaaaaaa= %.4f  \n\r",temp);
 			waitTime(1000);
-		//}
+
 }

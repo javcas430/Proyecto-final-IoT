@@ -268,6 +268,8 @@ uint8_t ec25Polling(void){
 
 	case kFSM_ENVIANDO_MENSAJE_TXT:
 		//printf("%s\r\n%c", ec25_buffer_tx,0x1A);	//Envia mensaje de texto incluido  CTRL+Z (0x1A)
+
+		//printf("Temperatura,16.809999,Humedad,70.400391,Presion,737.739990\r\n%c",0x1A);
 		sdk_mens();
 		ec25_fsm.anterior = ec25_fsm.actual;		//almacena el estado actual
 		ec25_fsm.actual = kFSM_ESPERANDO_RESPUESTA;	//avanza a esperar respuesta del modem
