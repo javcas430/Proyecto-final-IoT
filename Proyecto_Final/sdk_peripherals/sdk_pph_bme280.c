@@ -255,7 +255,7 @@ uint32_t readPressure(void) {
 	p = ((p + var1 + var2) >> 8) + (((int64_t) _bme280_calib.dig_P7) << 4);
 	//printf("%f", ((uint32_t) p / 256) / 100.0F);
 	//printf(" Presion = %f hPa\n\r", ((uint32_t) p / 256) / 100.0F);
-	double presion = ((uint32_t) p / 256) / 100.0F;
+	int presion = ((uint32_t) p / 256) / 100.0F;
 	return presion;
 	//return (uint32_t) p / 256;
 }
@@ -295,7 +295,7 @@ uint32_t readHumidity(void) {
 	uint32_t h = (v_x1_u32r >> 12);
 	//printf(" Humedad = %f %\n\r", h / 1024.0);
 	//printf("%f", h / 1024.0);
-	double humedad = h / 1024.0;
+	char humedad = h / 1024.0;
 	return humedad;
 }
 
