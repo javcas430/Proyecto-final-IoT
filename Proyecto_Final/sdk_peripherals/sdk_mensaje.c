@@ -20,15 +20,15 @@
 void sdk_mens(){
 
 //			printf("Temperatura,");
-			char temp =(float)readTemperature();
+			int temp =(float)readTemperature();
 //			printf(",Humedad,");
-			char hum = readHumidity();
+			int hum = readHumidity();
 //			printf(",Presion,");
 			int press =readPressure();
 //			printf("%c",0x1A);
 			//double alt = readAltitude(SEALEVELPRESSURE_HPA);
 
-			printf("Temperatura, %d,Humedad, %d,Presion, %i%c",temp,hum,press,0x1A);
+			printf("Temperatura,%i,Humedad,%i,Presion,%i%c",temp,hum,press,0x1A);
 			//printf("Temperaturaaaaaaaa= %.4f  \n\r",temp);
 			waitTime(1000);
 

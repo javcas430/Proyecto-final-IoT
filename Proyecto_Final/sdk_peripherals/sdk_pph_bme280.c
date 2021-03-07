@@ -295,7 +295,7 @@ uint32_t readHumidity(void) {
 	uint32_t h = (v_x1_u32r >> 12);
 	//printf(" Humedad = %f %\n\r", h / 1024.0);
 	//printf("%f", h / 1024.0);
-	char humedad = h / 1024.0;
+	int humedad = h / 1024.0;
 	return humedad;
 }
 
