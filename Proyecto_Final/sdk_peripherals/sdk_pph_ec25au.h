@@ -38,6 +38,8 @@ enum _ec25_lista_comandos_at {
 	kAT_QMTCONN,
 	kAT_QMTPUB,
 	kAT_TEXT_MSG_END,
+	KAT_CFUN_0,
+	KAT_CFUN_1,
 };
 
 enum _fsm_ec25_state{
@@ -55,6 +57,8 @@ enum _fsm_ec25_state{
 	kFSM_ENVIANDO_QMTCONN,
 	kFSM_ENVIANDO_QMTPUB,
 	kFSM_ENVIANDO_MENSAJE_TXT,//enviando mensaje
+	kFSM_ENVIANDO_CFUN_0,
+	kFSM_ENVIANDO_CFUN_1,		//reiniciando modem
 	kFSM_ESPERANDO_RESPUESTA,
 	kFSM_RESULTADO_ERROR,
 	kFSM_RESULTADO_EXITOSO

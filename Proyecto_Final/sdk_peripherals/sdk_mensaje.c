@@ -9,27 +9,17 @@
 #include "sdk_hal_i2c0.h"
 
 
-//#include <stdio.h>
-//#include "board.h"
-//#include "peripherals.h"
-//#include "pin_mux.h"
-//#include "clock_config.h"
 
-
-//bool leer=false;
 void sdk_mens(){
-
-//			printf("Temperatura,");
+			char vec[100];
 			int temp =(float)readTemperature();
-//			printf(",Humedad,");
 			int hum = readHumidity();
-//			printf(",Presion,");
 			int press =readPressure();
-//			printf("%c",0x1A);
 			//double alt = readAltitude(SEALEVELPRESSURE_HPA);
 
-			printf("Temperatura,%i,Humedad,%i,Presion,%i%c",temp,hum,press,0x1A);
-			//printf("Temperaturaaaaaaaa= %.4f  \n\r",temp);
+
+			sprintf((char *)(&vec[0]),"temperatura,%i,humedad,%i,presion,%i",temp,hum,press);
+			printf("%s%c",vec,0x1A);
 			waitTime(1000);
 
 }

@@ -25,6 +25,7 @@
 #include "sdk_hal_uart0.h"
 #include "sdk_hal_gpio.h"
 #include "sdk_hal_i2c0.h"
+#include "sdk_hal_lptmr0.h"
 
 #include <sdk_pph_bme280.h>
 #include "sdk_mdlw_leds.h"
@@ -37,7 +38,7 @@
  * ****************************************************
  * Definitions
  ******************************************************************************/
-
+#define HABILITAR_TLPTMR0   1
 /*******************************************************************************
  * Private Prototypes
  ******************************************************************************/
@@ -59,6 +60,18 @@ void waytTime(void) {
 		tiempo--;
 	} while (tiempo != 0x0000);
 }
+
+
+void mytimer(void) {
+
+	while (lptmr0GetTimeValue() < 100){
+		}
+	lptmr0SetTimeValue(0);
+
+}
+
+
+
 
 void PrintValues(void) {
 
@@ -151,21 +164,36 @@ int main(void) {
 	//Ciclo infinito encendiendo y apagando led verde
 	//inicia el SUPERLOOP
     while(1) {
+		#if HABILITAR_TLPTMR0
+    		//Inicializa todas las funciones necesarias para trabajar con el modem EC25
+    		//printf("Inicializa low power timer 0\r\n");
+    		lptmr0Init();
+		#endif
     	waytTime();
 
     	estado_actual_ec25=ec25Polling();
 
-  	switch(estado_actual_ec25){
+    	switch(estado_actual_ec25){
     	case kFSM_RESULTADO_ERROR:
     		toggleLedRojo();
     		apagarLedVerde();
     		apagarLedAzul();
+    		mytimer();
+    		ec25Inicializacion();
     		break;
 
     	case kFSM_RESULTADO_EXITOSO:
     		toggleLedVerde();
     		apagarLedAzul();
     		apagarLedRojo();
+    		//Cuando se confirma el envio del dato correctamente, se bloquea el modem por un tiempo t
+    		//con un timer.
+    		//printf("AT+CFUN=0");
+    		//Despues de un tiempo t el modem reinicia modem y envia datos de nuevo
+//    		printf("AT+CFUN=1");
+//    		toggleLedVerde();
+    		mytimer();
+    		ec25Inicializacion();
     		break;
 
     	default:
@@ -174,6 +202,7 @@ int main(void) {
     		apagarLedRojo();
     		break;
     	}
+
     }
 
 

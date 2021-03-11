@@ -13,6 +13,7 @@
 #include "sdk_pph_ec25au.h"
 #include "sdk_mdlw_leds.h"
 #include "sdk_mensaje.h"
+#include "sdk_hal_lptmr0.h"
 
 /*******************************************************************************
  * Definitions
@@ -31,6 +32,8 @@ enum _ec25_lista_ordendes{
 
 #define EC25_BYTES_EN_BUFFER	100
 #define EC25_TIEMPO_MAXIMO_ESPERA	1
+
+#define HABILITAR_TLPTMR0   1
 /*******************************************************************************
  * Private Prototypes
  ******************************************************************************/
@@ -65,10 +68,12 @@ const char *ec25_comandos_at[] = {
 	"AT+CEREG?",
 	"AT+CGDCONT=1,\"IP\",\"internet.comcel.com.co\"", //Configuracion APN claro
 	"AT+QIACT=1",         					//Activacion de contexto
-	"AT+QMTOPEN=0,\" 3.210.189.57\",1883",	//Conectarse al servidor MQTT
+	"AT+QMTOPEN=0,\" 54.236.210.97\",1883",	//Conectarse al servidor MQTT
 	"AT+QMTCONN=0,\"guest\",\"guest\" ,\"guest\"", //Conectarse al perfil dentro del broker
 	"AT+QMTPUB=0,0,0,0,\"1/sensor\"",		//Publicar en un topico
 	"Mensaje", 								//MENSAJE & CTRL+Z
+	"AT+CFUN=0", 							//Apagar modem
+	"AT+CFUN=1",							//iniciar modem
 	};
 
 //Lista de respuestas a cada comando AT
@@ -86,6 +91,8 @@ const char  *ec25_repuestas_at[]={
 		"OK",		//AT+QMTCONN=0,\"guest\",\"guest\" ,\"guest\"
 		">",		//AT+QMTPUB=0,0,0,0,\"1/sensor\"
 		"OK",		//Mensaje & ctrl Z
+		"OK",		//AT+CFUN=0
+		"OK",		//AT+CFUN=1
 };
 
 
@@ -93,6 +100,15 @@ const char  *ec25_repuestas_at[]={
  * Private Source Code
  ******************************************************************************/
 //------------------------------------
+
+void waytTime2(void) {
+	uint32_t tiempo = 0xFFFFFF;
+	do {
+		tiempo--;
+	} while (tiempo != 0x0000);
+}
+
+
 void ec25BorrarBufferRX(void){
 	uint8_t i;
 
@@ -126,6 +142,7 @@ void waytTimeModem(void) {
  * Public Source Code
  ******************************************************************************/
 status_t ec25Inicializacion(void){
+
 	ec25_fsm.anterior=kFSM_INICIO;
 	ec25_fsm.actual=kFSM_INICIO;
 
@@ -273,6 +290,25 @@ uint8_t ec25Polling(void){
 		sdk_mens();
 		ec25_fsm.anterior = ec25_fsm.actual;		//almacena el estado actual
 		ec25_fsm.actual = kFSM_ESPERANDO_RESPUESTA;	//avanza a esperar respuesta del modem
+		ec25_timeout = 0;	//reset a contador de tiempo
+		break;
+
+	case kFSM_ENVIANDO_CFUN_0:
+		ec25BorrarBufferRX();	//limpia buffer para recibir datos de quectel
+		printf("%s\r\n", ec25_comandos_at[KAT_CFUN_0]);	//Envia comando AT+CMGS="3003564960"
+
+		ec25_fsm.anterior = ec25_fsm.actual;		//almacena el estado actual
+		ec25_fsm.actual = kFSM_ESPERANDO_RESPUESTA;	//avanza a esperar respuesta del modem
+		ec25_timeout = 0;	//reset a contador de tiempo
+		break;
+
+	case kFSM_ENVIANDO_CFUN_1:
+		ec25BorrarBufferRX();	//limpia buffer para recibir datos de quectel
+		printf("%s\r\n", ec25_comandos_at[KAT_CFUN_1]);	//Envia comando AT+CMGS="3003564960"
+
+		ec25_fsm.anterior = ec25_fsm.actual;		//almacena el estado actual
+		ec25_fsm.actual = kFSM_ESPERANDO_RESPUESTA;	//avanza a esperar respuesta del modem
+		waytTime2();
 		ec25_timeout = 0;	//reset a contador de tiempo
 		break;
 
@@ -491,6 +527,40 @@ uint8_t ec25Polling(void){
 				//Busca palabra EC25 en buffer rx de quectel
 				puntero_ok = (uint8_t*) (strstr((char*) (&ec25_buffer_rx[0]),
 						(char*) (ec25_repuestas_at[kAT_TEXT_MSG_END])));
+
+				if(puntero_ok!=0x00){
+					//Si la respuesta es encontrada, se avanza al siguiente estado
+					ec25_fsm.anterior = ec25_fsm.actual;		//almacena el estado actual
+					ec25_fsm.actual = kFSM_ENVIANDO_CFUN_0;		//avanza a enviar nuevo comando al modem
+					waytTime();
+				}else{
+					//Si la respuesta es incorrecta, se queda en estado de error
+					//No se cambia (ec25_fsm.anterior) para mantener en que comando AT fue que se generó error
+					ec25_fsm.actual = kFSM_RESULTADO_ERROR;		//se queda en estado de error
+				}
+				break;
+
+			case kFSM_ENVIANDO_CFUN_0:
+				//Busca palabra EC25 en buffer rx de quectel
+				puntero_ok = (uint8_t*) (strstr((char*) (&ec25_buffer_rx[0]),
+						(char*) (ec25_repuestas_at[KAT_CFUN_0])));
+
+				if(puntero_ok!=0x00){
+					//Si la respuesta es encontrada, se avanza al siguiente estado
+					ec25_fsm.anterior = ec25_fsm.actual;		//almacena el estado actual
+					ec25_fsm.actual = kFSM_ENVIANDO_CFUN_1;		//avanza a enviar nuevo comando al modem
+
+				}else{
+					//Si la respuesta es incorrecta, se queda en estado de error
+					//No se cambia (ec25_fsm.anterior) para mantener en que comando AT fue que se generó error
+					ec25_fsm.actual = kFSM_RESULTADO_ERROR;		//se queda en estado de error
+				}
+				break;
+
+			case kFSM_ENVIANDO_CFUN_1:
+				//Busca palabra EC25 en buffer rx de quectel
+				puntero_ok = (uint8_t*) (strstr((char*) (&ec25_buffer_rx[0]),
+						(char*) (ec25_repuestas_at[KAT_CFUN_1])));
 
 				if(puntero_ok!=0x00){
 					//Si la respuesta es encontrada, se avanza al siguiente estado
