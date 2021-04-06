@@ -68,7 +68,7 @@ const char *ec25_comandos_at[] = {
 	"AT+CEREG?",
 	"AT+CGDCONT=1,\"IP\",\"internet.comcel.com.co\"", //Configuracion APN claro
 	"AT+QIACT=1",         					//Activacion de contexto
-	"AT+QMTOPEN=0,\" 54.236.210.97\",1883",	//Conectarse al servidor MQTT
+	"AT+QMTOPEN=0,\" 34.231.226.74\",1883",	//Conectarse al servidor MQTT
 	"AT+QMTCONN=0,\"guest\",\"guest\" ,\"guest\"", //Conectarse al perfil dentro del broker
 	"AT+QMTPUB=0,0,0,0,\"1/sensor\"",		//Publicar en un topico
 	"Mensaje", 								//MENSAJE & CTRL+Z
