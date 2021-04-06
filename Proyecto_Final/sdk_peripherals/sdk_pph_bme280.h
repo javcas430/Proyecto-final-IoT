@@ -121,6 +121,12 @@ enum sensor_sampling {
      @brief  power modes
  */
  /**************************************************************************/
+enum sensor_mode {
+ MODE_SLEEP=0,
+ MODE_FORCED=1,
+ MODE_NORMAL=3,
+};
+
  /**************************************************************************/
  /*!
      @brief  filter values
@@ -150,11 +156,6 @@ enum sensor_filter {
    STANDBY_MS_20,
  };
 
- enum sensor_mode {
-  MODE_SLEEP=0,
-  MODE_FORCED=1,
-  MODE_NORMAL=3,
-};
 
 void waitTime(int32_t t);
 bool bme280_Init(void);
