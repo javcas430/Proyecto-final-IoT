@@ -635,7 +635,3 @@ status_t detectarModemQuectel(void){
 }
 
 
-
-status_t fsmModemQuectelEC25(void){
-
-}

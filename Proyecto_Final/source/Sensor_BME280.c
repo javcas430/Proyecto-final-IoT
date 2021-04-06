@@ -70,22 +70,6 @@ void mytimer(void) {
 
 }
 
-
-
-
-void PrintValues(void) {
-
-//	printf("Temperatura = %.2f C\n\r",temp );
-
-//	printf("Presion = %.2f hPa\n\r",press);
-
-//	printf("Altitud aproximada = %.2f m\n\r",altt);
-
-//	printf("Humedad = %.2f %\n\r",hum );
-
-	printf("\n\r");
-}
-
 /*
  * @brief   Application entry point.
  */
@@ -103,65 +87,12 @@ int main(void) {
 	(void) i2c0MasterInit(100000);	//100kbps
 
 	bool inicio = Bme280_Begin(0x76);
-//	if (inicio){
-//		printf("bien\n\r");
-//		sdk_mens();
-//	}
 
-	//uint8_t letra;
-	//status_t status;
-	//bool leer=false;
-   //LLamado a funcion que identifica modem conectado a puerto UART0
-
-//	if(detectarModemQuectel()==kStatus_Success){
-//		encenderLedAzul();
-//	}else{
-//		apagarLedAzul();
-//	}
-
-/*while (1) {
-
-		if (leer) {
-			float temp =(float)readTemperature();
-			double press =readPressure();
-			double alt = readAltitude(SEALEVELPRESSURE_HPA);
-			double hum = readHumidity();
-			printf("Temperaturaaaaaaaa= %.4f  \n\r",temp);
-			waitTime(1000);
-		}
-		if (uart0CuantosDatosHayEnBuffer() > 0) {
-			status = uart0LeerByteDesdeBuffer(&letra);
-			printf("Dato entrante: %c \r\n", letra);
-
-			switch (letra) {
-
-			case 'i':
-				if (inicio) { //inicializa el sensor en la direccion i2c 0x76
-					printf("Iniciando Medicion!!  \n\r");
-					leer=true;
-				} else {
-					printf("Fallo al iniciar BME280 ='( ");
-					waitTime(200);
-					inicio = Bme280_Begin(0x76);
-				}
-				break;
-			case 'I':
-				leer=false;
-				break;
-			default:
-				printf("Letra incorrecta :( \r\n");
-				break;
-
-			}
-
-		}
-	}
-	*/
     //inicializa todas las funciones necesarias para trabajar con el modem EC25
     ec25Inicializacion();
    // ec25EnviarMensajeDeTexto(&mensaje[0], sizeof(mensaje));
 
-	//Ciclo infinito encendiendo y apagando led verde
+
 	//inicia el SUPERLOOP
     while(1) {
 		#if HABILITAR_TLPTMR0
@@ -186,12 +117,6 @@ int main(void) {
     		toggleLedVerde();
     		apagarLedAzul();
     		apagarLedRojo();
-    		//Cuando se confirma el envio del dato correctamente, se bloquea el modem por un tiempo t
-    		//con un timer.
-    		//printf("AT+CFUN=0");
-    		//Despues de un tiempo t el modem reinicia modem y envia datos de nuevo
-//    		printf("AT+CFUN=1");
-//    		toggleLedVerde();
     		mytimer();
     		ec25Inicializacion();
     		break;
@@ -204,7 +129,6 @@ int main(void) {
     	}
 
     }
-
 
 	return 0;
 }
